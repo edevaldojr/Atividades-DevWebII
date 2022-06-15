@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -204,22 +203,19 @@ Route::get('/nota/lancar/{nota}/{matricula}/{nome?}/', function($nota, $matricul
         
         foreach($dados as $aluno) {      
             $alunos .= "<tr>";
-            $count = 0;
             foreach ($aluno as $parametros => $param) {
                 $alunos .= "<td>";
-                $count++;
-                if($count == 3 && $alterarNota == true){
-                    $alunos .= "$nota"."$space";
-                    $alterarNota = false;
-                    $count = 0;
-                }
-                else if($matricula==$param && $nome == null){
-                    $alterarNota = true;
-                    $alunos .= "$param"."$space"; 
+                if($matricula==$param){
+
+                    $aluno[$matricula]['Nota'] = $nota;
+                    $alunos .= $aluno[$matricula]['Nota'];  
+
                 }else if($nome==$param){ 
-                    $alterarNota = true;
-                    $alunos .= "$param"."$space"; 
-                }else {
+
+                    $aluno['Aluno']['Nota'] = $nota;
+                    $alunos .= $aluno['Aluno']['Nota'];  
+
+                }else{
                     $alunos .= "$param"."$space";  
                 }
                 
@@ -239,117 +235,159 @@ Route::get('/nota/lancar/{nota}/{matricula}/{nome?}/', function($nota, $matricul
     $alunos .= "</ul></table>";
 
     return $alunos;
+})->name('nota.limite');
+
+Route::get('/nota/lancar/{nota}/{matricula}/{nome?}/', function($nota, $matricula, $nome=null) {
+
+    $space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    $alunos = "";
+    $dados = array(
+        array("Matricula" => 1, "Aluno" => "Edevaldo Junior", "Nota" => 9),
+        array("Matricula" => 2, "Aluno" => "Jonathan Zap", "Nota" => 2),
+        array("Matricula" => 3, "Aluno" => "Joãozinho Pleb", "Nota" => 8),
+        array("Matricula" => 4, "Aluno" => "Flavin Zika", "Nota" => 6),
+        array("Matricula" => 5, "Aluno" => "Gil Zika", "Nota" => 4)
+    );
+
+    if($matricula <= count($dados) && is_numeric($matricula)) {
+        $alunos .= "<ul><table><br><tr><td>Matricula</td><td>Aluno</td><td>Nota</td></tr>";
+        $alterarNota = false;
+        
+        foreach($dados as $aluno) {      
+            foreach ($aluno as $parametros => $param) {
+                if($matricula==$param){
+                    $aluno[$matricula]['Nota'] = $nota; 
+
+                }else if($nome==$param){ 
+                    $aluno['Aluno']['Nota'] = $nota;
+
+                }
+            }        
+        }
+
+
+        foreach($dados as $aluno) {      
+            $alunos .= "<tr>";
+            foreach ($aluno as $parametros => $param) {
+                $alunos .= "<td>";
+                $alunos .= "$param"."$space"; 
+                $alunos .= "</td>";
+            }  
+            $alunos .= "</tr>";       
+
+        }
+
+
+
+    }else{
+        $alunos .= "<li>VALOR INVÁLIDO!</li>";
+    }
+    
+
+    $alunos .= "</ul></table>";
+
+    return $alunos;
 })->name('nota.lancar');
 
 
-Route::get('/nota/conceito/{A}/{B}/{C}/', function($minA, $minB, $minC) {
-
-    $space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    $alunos = "";
-    $dados = array(
-        array("Matricula" => 1, "Aluno" => "Edevaldo Junior", "Nota" => 9),
-        array("Matricula" => 2, "Aluno" => "Jonathan Zap", "Nota" => 2),
-        array("Matricula" => 3, "Aluno" => "Joãozinho Pleb", "Nota" => 8),
-        array("Matricula" => 4, "Aluno" => "Flavin Zika", "Nota" => 6),
-        array("Matricula" => 5, "Aluno" => "Gil Zika", "Nota" => 4)
-    );
-
-    if(is_numeric($minA) && is_numeric($minB) && is_numeric($minC)) {
-        $alunos .= "<ul><table><br><tr><td>Matricula</td><td>Aluno</td><td>Nota</td></tr>";
-        $alterarNota = false;
-        
-        foreach($dados as $aluno) {      
-            $alunos .= "<tr>";
-            $count = 0;
-            foreach ($aluno as $parametros => $param) {
-                $alunos .= "<td>";
-                $count++;
-                    if($count == 3 ){
-
-                        if ($minA <= $param) {
-                            $alunos .= "A"."$space";
-                        }else if ($minB <= $param) {
-                            $alunos .= "B"."$space";
-                        }else if ($minC <= $param) {
-                            $alunos .= "C"."$space";
-                        }else { 
-                            $alunos .= "D"."$space";
-                        } 
-
-                    }else {
-                        $alunos .= "$param"."$space"; 
-                    }
-                    
-                $alunos .= "</td>";
-            }  
-            $alunos .= "</tr>";       
-
-        }
 
 
 
-    }else{
-        $alunos .= "<li>VALOR INVÁLIDO!</li>";
+
+
+// Parâmetros de Rotas - Obrigatórios
+Route::get('/alunos/{total}/{nome}', function($total, $nome) {
+
+    $alunos = "<ul>";
+
+    for($cont=0; $cont<$total; $cont++) {
+        $alunos .= "<li>$nome</li>";
     }
-    
 
-    $alunos .= "</ul></table>";
+    $alunos .= "</ul>";
 
     return $alunos;
-})->name('nota.conceito');
+});
 
-Route::post('/nota/conceito', function(Request $request) {
+// Parâmetros de Rotas - Opcionais
+Route::get('/racas/{total}/{raca?}/', function($total, $raca=null) {
 
-    $space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-    $alunos = "";
     $dados = array(
-        array("Matricula" => 1, "Aluno" => "Edevaldo Junior", "Nota" => 9),
-        array("Matricula" => 2, "Aluno" => "Jonathan Zap", "Nota" => 2),
-        array("Matricula" => 3, "Aluno" => "Joãozinho Pleb", "Nota" => 8),
-        array("Matricula" => 4, "Aluno" => "Flavin Zika", "Nota" => 6),
-        array("Matricula" => 5, "Aluno" => "Gil Zika", "Nota" => 4)
+        "Bulldog Inglês",
+        "Labrador",
+        "Pastor Alemão",
+        "Akita"
     );
+    
+    $pets = "<ul>";
 
-    if(is_numeric($minA) && is_numeric($minB) && is_numeric($minC)) {
-        $alunos .= "<ul><table><br><tr><td>Matricula</td><td>Aluno</td><td>Nota</td></tr>";
-        $alterarNota = false;
-        
-        foreach($dados as $aluno) {      
-            $alunos .= "<tr>";
-            $count = 0;
-            foreach ($aluno as $parametros => $param) {
-                $alunos .= "<td>";
-                $count++;
-                    if($count == 3 ){
-
-                        if ($minA <= $param) {
-                            $alunos .= "A"."$space";
-                        }else if ($minB <= $param) {
-                            $alunos .= "B"."$space";
-                        }else if ($minC <= $param) {
-                            $alunos .= "C"."$space";
-                        }else { 
-                            $alunos .= "D"."$space";
-                        } 
-
-                    }else {
-                        $alunos .= "$param"."$space"; 
-                    }
-                    
-                $alunos .= "</td>";
-            }  
-            $alunos .= "</tr>";       
-
+    if($raca == null) {
+        if($total <= count($dados)) {
+            $cont = 0;
+            foreach($dados as $item) {
+                $pets .= "<li>$item</li>";
+                $cont++;
+                if($cont >= $total) break;
+            }
         }
-
-
-
-    }else{
-        $alunos .= "<li>VALOR INVÁLIDO!</li>";
+        else {
+            $pets .= "<li>Tamanho Máximo = ".count($dados)."</li>";
+        }
+    }
+    else {
+        for($cont=0; $cont<$total; $cont++) {
+            $pets .= "<li>$raca</li>";
+        }
     }
     
+    $pets .= "</ul>";
 
-    $alunos .= "</ul></table>";
+    return $pets;
+});
 
-    return $alunos;
-})->name('nota.conceito');
+// Parâmetros de Rotas - Com Regras
+Route::get('/veterinarios/{total}/{nome}', function($total, $nome) {
+
+    $vets = "<ul>";
+
+    for($a=0; $a<$total; $a++) {
+            $vets = $vets."<li>$nome</li>";
+    }
+
+    $vets = $vets."</ul>";
+
+    return $vets;
+    
+})->where('total', '[0-9]+')->where('nome', '[A-Za-z]+');
+
+// Agrupamento de Rotas / Retornando View
+Route::prefix('/consultas')->group(function() {
+
+    Route::get('/', function() {
+        // return "<h1>Lista de Consultas Agendadas</h1>";
+        return view('consultas');
+    })->name('consultas');
+
+    Route::get('/agendar', function() {
+        // return "<h1>Agendar Consulta</h1>";
+        return view('agendar');
+    })->name('consultas.agendar');
+
+    Route::get('/cancelar', function() {
+        // return "<h1>Canclar Consulta</h1>";
+        return view('cancelar');
+    })->name('consultas.cancelar');
+});
+
+// Redirecionamento de rotas
+Route::redirect('/', 'clientes', 301);
+
+Route::get('/veterinarios', function() {
+    return redirect()->route('clientes');
+});
+
+// Rota com Método POST
+Route::post('veterinarios/add', function(Request $request) {
+    
+    return "<h1>Adicionar Veterinário (POST)</h1>";
+});
