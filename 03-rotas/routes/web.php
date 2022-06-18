@@ -300,6 +300,10 @@ Route::get('/nota/conceito/{A}/{B}/{C}/', function($minA, $minB, $minC) {
 
 Route::post('/nota/conceito', function(Request $request) {
 
+    $minA = $request -> A;
+    $minB = $request -> B;
+    $minC = $request -> C;
+
     $space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
     $alunos = "";
     $dados = array(
