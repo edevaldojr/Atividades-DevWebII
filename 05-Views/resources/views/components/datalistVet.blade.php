@@ -21,8 +21,8 @@
             @foreach ($data as $item)
                 <tr>
                     <td class="d-none d-md-table-cell">{{ $item['id'] }}</td>
-                    <td>{{ $item['nome'] }}</td>
                     <td class="d-none d-md-table-cell">{{ $item['crmv'] }}</td>
+                    <td>{{ $item['nome'] }}</td>
                     <td class="d-none d-md-table-cell">{{ $item['especialidade'] }}</td>
                     <td>
                         <a href= "{{ route('veterinarios.edit', $item['id']) }}" class="btn btn-success">

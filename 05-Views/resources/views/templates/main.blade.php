@@ -135,6 +135,8 @@
     <script type="text/javascript">
 
         function showInfoModal() {
+            console.log("chegou aqui")
+            console.log(arguments)
             $('#infoModal').modal().find('.modal-body').html("");
             for(let a=0; a< arguments.length; a++) {
                 $('#infoModal').modal().find('.modal-body').append("<b>" + arguments[a] + "</b><br>");
@@ -147,6 +149,8 @@
         }
 
         function showRemoveModal(id, nome) {
+            console.log("chegou aqui")
+            console.log(id, nome)
             $('#id_remove').val(id);
             $('#removeModal').modal().find('.modal-body').html("");
             $('#removeModal').modal().find('.modal-body').append("Deseja remover o registro <b class='text-danger'>'"+nome+"'</b> ?");
