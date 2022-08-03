@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Route::resource('eixos', 'App\Http\Controllers\EixoController');
 
+Route::post('eixos/store', 'EixoController@store');
+
 Route::resource('cursos', 'App\Http\Controllers\CursoController');
 
 Route::resource('professores', 'App\Http\Controllers\ProfessoresController');

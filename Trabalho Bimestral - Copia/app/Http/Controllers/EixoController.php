@@ -7,7 +7,7 @@ use App\Models\Eixo;
 
 class EixoController extends Controller
 {
-   
+
     public function index() {
 
         $dados = Eixo::all();
@@ -19,23 +19,23 @@ class EixoController extends Controller
         return view('eixos.create');
     }
 
-   public function store(Request $request) {
+    public function store(Request $request) {
 
-        $rules = [
-            'nome' => 'required|max:100|min:10',
+        $regras = [
+            'nome' => 'required|min:10|max:50',
         ];
 
-        $msgs = [
-            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
-            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
-            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!",
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório!",
+            "min" => "O [:attribute] deve conter no mínimo [:min] caracteres!",
+            "max" => "O [:attribute] deve conter no máximo [:max] caracteres!",
         ];
-        $request->validate($rules, $msgs);
 
-        Eixo::create([
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-        ]);
+        $request->validate($regras, $msg);
 
+        $obj_eixo = new Eixo();
+        $obj_eixo->nome = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_eixo->save();
 
         return redirect()->route('eixos.index');
     }

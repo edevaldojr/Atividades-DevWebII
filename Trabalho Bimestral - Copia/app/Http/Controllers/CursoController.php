@@ -38,15 +38,19 @@ class CursoController extends Controller
         ];
         $request->validate($rules, $msgs);
 
-        Curso::create([
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            'sigla' => $request->sigla,
-            'tempo' => $request->tempo,
-            'eixo_id' => $request->eixo_id
-        ]);
+        $obj_eixo = Eixo::find($request->eixo_id);
 
+        if(isset($obj_eixo)) {
 
-        return redirect()->route('cursos.index');
+            $obj_curso = new curso();
+            $obj_curso->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_curso->sigla = mb_strtoupper($request->sigla, 'UTF-8');
+            $obj_curso->tempo = mb_strtoupper($request->tempo, 'UTF-8');
+            $obj_curso->eixo()->associate($obj_eixo);
+            $obj_curso->save();
+
+            return redirect()->route('cursos.index');
+        }
     }
 
     public function show($id) {
