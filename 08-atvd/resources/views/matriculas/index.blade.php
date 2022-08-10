@@ -10,12 +10,12 @@
     </div>
     <div class="row mb-3">
         <div class="col">
-            <table class="table align-middle caption-top  table-success table-striped" id="tabela">
+            <table class="table align-middle caption-top table-striped" id="tabela">
 
                 <caption>Tabela de <b>Matricula</b></caption>
                 <thead>
                     <tr class="header-table">
-                        <th scope="col" class="text-center">Disciplina</th>
+                        <th scope="col" class="text-left">Disciplina</th>
                         <th scope="col" class="text-center">Matricula</th>
                     </tr>
                 </thead>
