@@ -29,6 +29,5 @@ Route::resource('vinculos', 'App\Http\Controllers\VinculoController');
 
 Route::resource('alunos', 'App\Http\Controllers\AlunoController');
 
-Route::get('alunos/matricula/{id}', 'App\Http\Controllers\AlunoController@matricula')->name('alunos.matricula');
+Route::resource('matriculas', 'App\Http\Controllers\MatriculaController');
 
-Route::post('alunos/matricula/{id}', 'App\Http\Controllers\AlunoController@matricula')->name('alunos.matricular');

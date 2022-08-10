@@ -9,23 +9,15 @@ use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
 {
-    public function index() {
-
-        $dados[0] = Aluno::all();
-        $dados[1] = Disciplina::all();
-
-        return view('alunos.matricula', compact('dados'));
-    }
 
    public function store(Request $request) {
 
         $matriculas = $request->matriculas;
+        $obj_aluno = Aluno::find($request->aluno);
+        Matricula::where('aluno_id', $obj_aluno->id)->forceDelete();
+        foreach($matriculas as $id){
 
-        foreach($matriculas as $ids){
-            $arr = explode("_", $ids);
-            Matricula::where('aluno_id', $arr[0])->forceDelete();
-            $obj_aluno = Aluno::find($arr[0]);
-            $obj_disciplina = Disciplina::find($arr[1]);
+            $obj_disciplina = Disciplina::find($id);
 
             if(!isset($obj_aluno) || !isset($obj_disciplina)) { return "<h1>ID: id não encontrado!"; }
 

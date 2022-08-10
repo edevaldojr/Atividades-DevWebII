@@ -21,6 +21,16 @@ class AlunoController extends Controller
         return view('alunos.create', compact('dados'));
     }
 
+    public function show($id)
+    {
+        $dados[0] = Aluno::find($id);
+
+        $dados[1]= Disciplina::where('curso_id', $dados[0]->curso_id)->get();
+
+        $dados[2] = Matricula::where('aluno_id', $id)->get();
+
+        return view('matriculas.index', compact('dados'));
+    }
 
     public function store(Request $request) {
 
@@ -90,39 +100,5 @@ class AlunoController extends Controller
 
         return redirect()->route('alunos.index');
     }
-
-    public function matricula($id) {
-
-        $dados[0] = Disciplina::all();
-        $dados[1] = Aluno::find($id);
-        $dados[2] = Matricula::where('aluno_id', $dados[1]->id)->get();
-
-        return view('alunos.matricula', compact('dados'));
-    }
-
-   public function matricular(Request $request, $id) {
-
-        $matriculas = $request->matriculas;
-        $obj_aluno = Aluno::find($id);
-
-        if(!isset($obj_aluno)) { return "<h1>ID: id não encontrado!"; }
-
-        foreach($matriculas as $ids){
-            Matricula::where('name', $obj_aluno->nome)->forceDelete();
-
-            $obj_disciplina = Disciplina::find($ids);
-
-            if(!isset($obj_disciplina)) { return "<h1>ID: id não encontrado!"; }
-
-            $obj = new Matricula();
-            $obj->aluno()->associate($obj_aluno);
-            $obj->disciplina()->associate($obj_disciplina);
-
-            $obj->save();
-        }
-
-        return redirect()->route('alunos.index');
-    }
-
 
 }
