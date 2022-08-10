@@ -72,12 +72,12 @@ class AlunoController extends Controller
         $obj = Aluno::find($id);
         $obj_curso = Curso::find($request->curso_id);
 
-        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+        if(!isset($obj) && !isset($obj_curso)) { return "<h1>ID: $id não encontrado!"; }
+
 
         $rules = [
             'nome' => 'required|max:100|min:10',
             'curso_id' => 'required',
-            'carga' => 'required|max:12|min:1'
         ];
 
         $msgs = [

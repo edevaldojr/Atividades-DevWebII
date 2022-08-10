@@ -88,7 +88,7 @@ class ProfessoresController extends Controller
         $request->validate($rules, $msgs);
 
         $obj->nome = mb_strtoupper($request->nome, 'UTF-8');
-        $obj->email = $request->sigla;
+        $obj->email = $request->email;
         $obj->siape = $request->siape;
         $obj->ativo = $request->ativo;
         $obj->eixo()->associate($obj_eixo);
