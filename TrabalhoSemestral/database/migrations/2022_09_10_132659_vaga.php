@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vaga', function (Blueprint $table) {
+        Schema::create('vagas', function (Blueprint $table) {
             $table->id();
             $table->string('bloco');
             $table->string('numero');
+            $table->boolean('ocupado')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vaga');
+        Schema::dropIfExists('vagas');
     }
 };

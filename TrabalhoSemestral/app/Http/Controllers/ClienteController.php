@@ -11,7 +11,7 @@ class ClienteController extends Controller
 {
     public function index() {
 
-        $dados = Cliente::with(['carro'])->get();
+        $dados = Cliente::all();
         return view('clientes.index', compact('dados', 'permissions'));
     }
 
@@ -35,17 +35,12 @@ class ClienteController extends Controller
 
         $request->validate($regras, $msg);
 
-        $obj_Carro = Carro::find($request->Carro_id);
+        $obj_Cliente = new Cliente();
+        $obj_Cliente->nome = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_Cliente->save();
 
-        if(isset($obj_Carro)) {
+        return redirect()->route('carros.index');
 
-            $obj_Cliente = new Cliente();
-            $obj_Cliente->nome = mb_strtoupper($request->nome, 'UTF-8');
-            $obj_Cliente->Carro()->associate($obj_Carro);
-            $obj_Cliente->save();
-
-            return redirect()->route('carros.index');
-        }
     }
 
     public function show(Cliente $Cliente) {

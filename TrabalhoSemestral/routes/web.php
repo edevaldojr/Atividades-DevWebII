@@ -14,15 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('templates.main')->with('titulo', "");
+    return view('templates.main')->with('titulo', "Dashboard");
 })->middleware(['auth']);
 
 Route::resource('/carros', '\App\Http\Controllers\CarroController')->middleware(['auth']);
 
+Route::resource('/vagas', '\App\Http\Controllers\VagasController')->middleware(['auth']);
+
 Route::resource('/estacionar', '\App\Http\Controllers\EstacionarController')->middleware(['auth']);
 
-Route::resource('/clientes', '\App\Http\Controllers\ClienteController')->middleware(['auth']);
-
-Route::resource('/funcionarios', '\App\Http\Controllers\FuncionarioController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

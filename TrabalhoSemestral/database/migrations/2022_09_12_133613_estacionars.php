@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('estacionar', function (Blueprint $table) {
             $table->unsignedBigInteger('carro_id');
-            $table->foreign('carro_id')->references('id')->on('carro');
+            $table->foreign('carro_id')->references('id')->on('carros');
             $table->unsignedBigInteger('vaga_id');
-            $table->foreign('vaga_id')->references('id')->on('vaga');
+            $table->foreign('vaga_id')->references('id')->on('vagas');
             $table->primary(['vaga_id', 'carro_id']);
             $table->timestamps();
         });
