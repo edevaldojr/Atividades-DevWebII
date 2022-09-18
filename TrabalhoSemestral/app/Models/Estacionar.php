@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Estacionar extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     public function carro() {
         return $this->belongsTo('App\Models\Carro');

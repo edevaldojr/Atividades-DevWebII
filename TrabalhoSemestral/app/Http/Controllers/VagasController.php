@@ -8,17 +8,20 @@ use Illuminate\Http\Request;
 class VagasController extends Controller
 {
     public function index() {
+        $this->authorize('viewAny', Vagas::class);
 
         $dados = Vagas::all();
         return view('vagas.index', compact('dados'));
     }
 
     public function create() {
+        $this->authorize('create', Vagas::class);
 
         return view('vagas.create');
     }
 
     public function store(Request $request) {
+        $this->authorize('create', Vagas::class);
 
         $regras = [
             'bloco' => 'required',
@@ -42,6 +45,7 @@ class VagasController extends Controller
 
 
     public function edit(Vagas $vaga) {
+        $this->authorize('update', $vaga);
 
         $dados = Vagas::find($vaga->id);
 
@@ -53,6 +57,7 @@ class VagasController extends Controller
     }
 
     public function update (Request $request, Vagas $vaga) {
+        $this->authorize('update', $vaga);
 
         $obj_Vagas = Vagas::find($vaga->id);
 
@@ -82,6 +87,7 @@ class VagasController extends Controller
     }
 
     public function destroy(Vagas $vaga) {
+        $this->authorize('delete', $vaga);
 
         Vagas::destroy($vaga->id);
 

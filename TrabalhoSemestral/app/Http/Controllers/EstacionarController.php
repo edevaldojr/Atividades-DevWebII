@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class EstacionarController extends Controller
 {
     public function index() {
+        $this->authorize('viewAny', Estacionar::class);
 
         $dados[0] = Estacionar::all();
         $dados[1] = Carro::all();
@@ -18,23 +19,32 @@ class EstacionarController extends Controller
     }
 
     public function store(Request $request) {
+        $this->authorize('create', Estacionar::class);
 
         $carros = $request->carros;
 
         foreach($carros as $ids){
             $arr = explode("_", $ids);
-            $obj_estacionado = Estacionar::find($arr[0]);
-            Estacionar::where('vaga_id', $arr[0])->forceDelete();
+            $estacionados = Estacionar::all();
             $obj_vaga = Vagas::find($arr[0]);
+            foreach ($estacionados as $estac) {
+                if($estac->vaga_id == $arr[0]){
+                    $obj_carro1 = Carro::find($estac->carro_id);
+                }
+            }
+
+            Estacionar::where('vaga_id', $arr[0])->forceDelete();
 
             if($arr[1] == "empty"){
                 if(!isset($obj_vaga)) {
                     return "<h1>ID: $obj_vaga->id id não encontrado!";
                 }
-                $obj_carro = Carro::find($obj_estacionado);
                 $obj_vaga->ocupado = false;
+                if(isset($obj_carro1)){
+                    $obj_carro1->estacionado = false;
+                    $obj_carro1->save();
+                }
                 $obj_vaga->save();
-                $obj_carro->save();
             } else {
                 $obj_carro = Carro::find($arr[1]);
 
@@ -45,9 +55,10 @@ class EstacionarController extends Controller
                 $obj_vaga->ocupado = true;
                 $obj_carro->estacionado = true;
                 $obj = new Estacionar();
-                $obj->Vagas()->associate($obj_vaga);
+                $obj->Vaga()->associate($obj_vaga);
                 $obj->Carro()->associate($obj_carro);
-
+                $obj_vaga->save();
+                $obj_carro->save();
                 $obj->save();
             }
 

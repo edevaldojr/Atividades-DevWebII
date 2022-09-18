@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\Role;
+use App\Facades\UserPermissions;
 
 class RegisteredUserController extends Controller
 {
@@ -20,8 +22,10 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        $roles = Role::orderBy('name')->get();
+        return view('auth.register', compact('roles'));
     }
+
 
     /**
      * Handle an incoming registration request.
@@ -42,6 +46,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role_id' => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
@@ -49,6 +54,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+
+        UserPermissions::loadPermissions(Auth::user()->role_id);
+
         return redirect(RouteServiceProvider::HOME);
     }
+
 }

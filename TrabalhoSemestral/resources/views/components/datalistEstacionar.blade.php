@@ -48,7 +48,6 @@
                     </td>
                 </tr>
             @endforeach
-        </form>
             <tfoot>
                 <td>
                     <a href="{{route('estacionar.index')}}" class="btn btn-outline-danger btn-block align-content-center">
@@ -67,6 +66,7 @@
                     </a>
                 </td>
             </tfoot>
+        </form>
         </tbody>
     </table>
 </div>

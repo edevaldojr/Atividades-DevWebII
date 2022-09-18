@@ -9,17 +9,20 @@ use App\Models\Vagas;
 class CarroController extends Controller
 {
     public function index() {
+        $this->authorize('viewAny', Carro::class);
 
         $dados = Carro::all();
         return view('carros.index', compact('dados'));
     }
 
     public function create() {
+        $this->authorize('create', Carro::class);
 
         return view('carros.create');
     }
 
     public function store(Request $request) {
+        $this->authorize('create', Carro::class);
 
         $regras = [
             'placa' => 'required|min:5|max:8',
@@ -48,6 +51,7 @@ class CarroController extends Controller
     }
 
     public function show(Carro $carro) {
+        $this->authorize('view', $carro);
 
         $dados[0] = Carro::find($carro->id);
 
@@ -57,6 +61,7 @@ class CarroController extends Controller
     }
 
     public function edit(Carro $Carro) {
+        $this->authorize('update', Carro::class);
 
         $dados = Carro::find($Carro->id);
 
@@ -68,6 +73,7 @@ class CarroController extends Controller
     }
 
     public function update (Request $request, Carro $carro) {
+        $this->authorize('update', $carro);
 
         $obj_Carro = Carro::find($carro->id);
 
@@ -103,9 +109,10 @@ class CarroController extends Controller
         return redirect()->route('carros.index');
     }
 
-    public function destroy(Carro $Carro) {
+    public function destroy(Carro $carro) {
+        $this->authorize('delete', $carro);
 
-        Carro::destroy($Carro->id);
+        Carro::destroy($carro->id);
 
         return redirect()->route('carros.index');
     }
