@@ -63,6 +63,7 @@
                     <h3 class="display-7 text-secondary d-none d-md-block"><b>{{ $titulo }}</b></h3>
                 </div>
                 @if(isset($rota))
+                    @can('create', $permission)
                         <div class="col d-flex justify-content-end">
                             <a href= "{{ route($rota) }}" style="cursor:pointer" class="btn btn-outline-success">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -70,8 +71,8 @@
                                 </svg>
                             </a>
                         </div>
+                    @endcan
                 @endif
-
             </div>
             <hr>
             @if(!$__env->yieldContent('conteudo'))

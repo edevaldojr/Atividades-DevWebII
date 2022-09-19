@@ -11,6 +11,7 @@ class EstacionarController extends Controller
 {
     public function index() {
         $this->authorize('viewAny', Estacionar::class);
+        $permissions = session('user_permissions');
 
         $dados[0] = Estacionar::all();
         $dados[1] = Carro::all();

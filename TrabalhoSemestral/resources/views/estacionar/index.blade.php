@@ -1,4 +1,4 @@
-@extends('templates.main', ['titulo' => "Estacionar"])
+@extends('templates.main', ['titulo' => "Estacionar", 'permission' => "App/Models/Estacionar"])
 
 @section('titulo') Estacionar @endsection
 

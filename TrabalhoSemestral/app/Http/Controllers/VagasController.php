@@ -9,6 +9,7 @@ class VagasController extends Controller
 {
     public function index() {
         $this->authorize('viewAny', Vagas::class);
+        $permissions = session('user_permissions');
 
         $dados = Vagas::all();
         return view('vagas.index', compact('dados'));
@@ -87,7 +88,7 @@ class VagasController extends Controller
     }
 
     public function destroy(Vagas $vaga) {
-        $this->authorize('delete', $vaga);
+        $this->authorize('destroy', $vaga);
 
         Vagas::destroy($vaga->id);
 

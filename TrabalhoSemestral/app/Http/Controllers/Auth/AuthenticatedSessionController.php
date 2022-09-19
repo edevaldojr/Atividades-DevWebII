@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Facades\UserPermissions;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,7 +30,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+
         $request->authenticate();
+        UserPermissions::loadPermissions(Auth::user()->role_id);
 
         $request->session()->regenerate();
 

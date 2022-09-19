@@ -10,6 +10,7 @@ class CarroController extends Controller
 {
     public function index() {
         $this->authorize('viewAny', Carro::class);
+        $permissions = session('user_permissions');
 
         $dados = Carro::all();
         return view('carros.index', compact('dados'));
