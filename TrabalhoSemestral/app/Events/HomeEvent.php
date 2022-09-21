@@ -14,15 +14,14 @@ class HomeEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
+    public $msg;
+
+    public function __construct($msg) {
+
+        $this->msg = $msg;
+
     }
+
 
     /**
      * Get the channels the event should broadcast on.

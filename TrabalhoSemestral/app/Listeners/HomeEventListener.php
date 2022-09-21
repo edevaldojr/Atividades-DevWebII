@@ -18,14 +18,9 @@ class HomeEventListener
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  \App\Events\HomeEvent  $event
-     * @return void
-     */
-    public function handle(HomeEvent $event)
-    {
-        //
+    public function handle(HomeEvent $event) {
+        info("[HomeEventListener]: Efetuou Login");
+        info($event->msg);
     }
+
 }

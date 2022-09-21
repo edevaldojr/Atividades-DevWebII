@@ -28,7 +28,7 @@ class CarroPolicy
         return UserPermissions::isAuthorized('carros.create');
     }
 
-    public function update(User $user, Carro $carro)
+    public function update(User $user)
     {
         return UserPermissions::isAuthorized('carros.edit');
     }
